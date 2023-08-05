@@ -1,0 +1,65 @@
+.movies-cardlist {
+  width: 100%;
+  max-width: 300px;
+  border-top: 1px solid #E8E8E8;
+  margin: 50px auto;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  justify-content: center;
+  row-gap: 16px;
+  grid-template-columns: repeat(auto-fit, 300px);
+}
+
+
+@media screen and (min-width: 695px ) {
+  .movies-cardlist {
+    border-top: 1px solid #E8E8E8;
+    max-width: 708px;
+    padding-top: 80px;
+    row-gap: 36px;
+    justify-content: space-between;
+    grid-template-columns: repeat(auto-fit, 339px);
+  }
+}
+
+@media screen and (min-width: 900px ) {
+  .movies-cardlist {
+    max-width: 1140px;
+    padding-top: 80px;
+    gap: 30px 24px;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, 364px);
+  }
+}
+
+.movies-cardlist__button {
+  display: block;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  margin: 80px auto 100px;
+  width: 240px;
+  height: 36px;
+  background-color: transparent;
+  border: 1px solid #E8E8E8;
+  border-radius: 5px;
+}
+
+.movies-cardlist__button_hidden {
+  visibility: hidden;
+}
+
+@media screen and (min-width: 650px ) {
+  .movies-cardlist__button {
+    width: 320px;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (min-width: 900px ) {
+  .movies-cardlist__button {
+    margin-bottom: 80px;
+  }
+}

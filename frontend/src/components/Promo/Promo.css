@@ -1,0 +1,50 @@
+.promo {
+  background-color: #F5F5F5;
+  padding: 220px 0 17px;
+  margin-bottom: 70px;
+  border-radius: 10px;
+}
+
+@media screen and (min-width: 650px ) {
+  .promo {
+    max-width: 728px;
+    margin: 0 auto;
+    padding: 350px 0 30px;
+    margin-bottom: 90px;
+  }
+}
+
+@media screen and (min-width: 900px ) {
+  .promo {
+    max-width: 1200px;
+    padding: 160px 0 30px;
+    margin-bottom: 110px;
+  }
+}
+
+.promo__heading {
+  margin: 0 auto;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 29px;
+  line-height: 37px;
+  color: #000;
+  text-align: center;
+  letter-spacing: -0.04em;
+}
+
+@media screen and (min-width: 650px ) {
+  .promo__heading {
+    max-width: 680px;
+    font-size: 40px;
+    line-height: 52px;
+  }
+}
+
+@media screen and (min-width: 900px ) {
+  .promo__heading {
+    font-size: 50px;
+    line-height: 58px;
+  }
+}
