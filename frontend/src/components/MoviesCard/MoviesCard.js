@@ -1,6 +1,6 @@
 import React from "react";
 
-function MoviesCard({ movie, page, onLikeFilm, onDeleteFilm, isSavedMovie }) {
+function MoviesCard({ movie, page, onLikeFilm, onDeleteFilm, isMovieSaved }) {
   function handleSaveFilm(evt) {
     const saveButton = evt.target.closest(".movie__button");
     saveButton.classList.toggle("movie__button_active");
@@ -11,7 +11,7 @@ function MoviesCard({ movie, page, onLikeFilm, onDeleteFilm, isSavedMovie }) {
   }
 
   function handleDeleteFilm() {
-    movie.selected = false
+    movie.selected = false;
     onDeleteFilm(movie);
   }
 
@@ -30,7 +30,7 @@ function MoviesCard({ movie, page, onLikeFilm, onDeleteFilm, isSavedMovie }) {
       {page === "movies" ? (
         <button
           className={`button movie__button ${
-            isSavedMovie(movie) ? "movie__button_active" : ""
+            isMovieSaved(movie) ? "movie__button_active" : ""
           }`}
           onClick={handleSaveFilm}
           type="button"

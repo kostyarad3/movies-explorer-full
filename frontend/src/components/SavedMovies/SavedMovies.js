@@ -5,7 +5,6 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 function SavedMovies({
   savedMovies,
   page,
-  searchValue,
   setSearchValue,
   checkBox,
   onDeleteFilm,
@@ -14,7 +13,6 @@ function SavedMovies({
   return (
     <section className="saved-movies">
       <SearchForm
-        searchValue={searchValue}
         setSearchValue={setSearchValue}
         checkBox={checkBox}
         handleCheckbox={handleCheckbox}

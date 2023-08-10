@@ -5,12 +5,11 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 function Movies({
   movies,
   page,
-  searchValue,
   setSearchValue,
   checkBox,
   handleCheckbox,
   onLikeFilm,
-  isSavedMovie,
+  isMovieSaved,
   isPreloaderActive,
   noMovieError,
   noMovieErrorText,
@@ -18,7 +17,6 @@ function Movies({
   return (
     <>
       <SearchForm
-        searchValue={searchValue}
         setSearchValue={setSearchValue}
         checkBox={checkBox}
         handleCheckbox={handleCheckbox}
@@ -28,7 +26,7 @@ function Movies({
         movies={movies}
         page={page}
         onLikeFilm={onLikeFilm}
-        isSavedMovie={isSavedMovie}
+        isMovieSaved={isMovieSaved}
         isPreloaderActive={isPreloaderActive}
         noMovieError={noMovieError}
         noMovieErrorText={noMovieErrorText}

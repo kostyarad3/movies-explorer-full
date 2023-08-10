@@ -1,33 +1,27 @@
 import React from "react";
 import useValidateForm from "../../hooks/useValidateForm";
 
-function SearchForm({
-  setSearchValue,
-  checkBox,
-  handleCheckbox,
-  searchValue,
-  page,
-}) {
+function SearchForm({ setSearchValue, checkBox, handleCheckbox, page }) {
   const { handleInputChange, inputValues } = useValidateForm();
 
   React.useEffect(() => {
     if (page === "movies") {
-      inputValues.inputValue = localStorage.getItem("searchValue")
-      setSearchValue(inputValues.inputValue)
+      inputValues.inputValue = localStorage.getItem("searchValue");
+      setSearchValue(inputValues.inputValue);
     } else {
-      inputValues.inputValue = localStorage.getItem("searchValueSaved")
-      setSearchValue(inputValues.inputValue)
+      inputValues.inputValue = localStorage.getItem("searchValueSaved");
+      setSearchValue(inputValues.inputValue);
     }
-  }, [])
+  }, []);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     if (page === "movies") {
-      localStorage.setItem("searchValue", inputValues.inputValue)
-      setSearchValue(inputValues.inputValue)
+      localStorage.setItem("searchValue", inputValues.inputValue);
+      setSearchValue(inputValues.inputValue);
     } else {
-      localStorage.setItem("searchValueSaved", inputValues.inputValue)
-      setSearchValue(inputValues.inputValue)
+      localStorage.setItem("searchValueSaved", inputValues.inputValue);
+      setSearchValue(inputValues.inputValue);
     }
   }
 

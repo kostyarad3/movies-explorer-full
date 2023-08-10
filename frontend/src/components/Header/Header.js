@@ -1,7 +1,7 @@
 import React from "react";
 import headerLogo from "../../images/logo-header.svg";
 import Navigation from "../Navigation/Navigation";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useWindowWidth from "../../hooks/useWindowWidth";
 
 function Header({ loggedIn }) {

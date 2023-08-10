@@ -17,7 +17,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   // STATES
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -28,13 +28,12 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [checkBox, setCheckBox] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
-  const [searchValueSaved, setSearchValueSaved] = React.useState("")
+  const [searchValueSaved, setSearchValueSaved] = React.useState("");
   const [filteredMovies, setFilteredMovies] = React.useState([]);
   const [filteredSavedMovies, setFilteredSavedMovies] = React.useState([]);
   const [isPreloaderActive, setIsPreloaderActive] = React.useState(false);
   const [noMovieError, setNoMovieError] = React.useState(false);
   const [noMovieErrorText, setNoMovieErrorText] = React.useState("");
-
   //FUNCTIONS
   function handleCheckbox(evt) {
     evt.preventDefault();
@@ -110,7 +109,7 @@ function App() {
           if (res) {
             setLoggedIn(true);
             navigate(location, { replace: true });
-            setCurrentUser(res.user)
+            setCurrentUser(res.user);
           }
         })
         .catch((err) => {
@@ -121,7 +120,7 @@ function App() {
 
   function handleLikeMovie(movie) {
     // проверить, сохранен ли фильм, если да - то удалитьиз сохраненных
-    if (isSavedMovie(movie)) {
+    if (isMovieSaved(movie)) {
       const newArr = savedMovies.filter(function (item) {
         return item.movieId !== movie.id;
       });
@@ -142,7 +141,7 @@ function App() {
     }
   }
 
-  function isSavedMovie(movie) {
+  function isMovieSaved(movie) {
     return savedMovies.some((item) => item.movieId === movie.id);
   }
 
@@ -194,7 +193,7 @@ function App() {
       filteredMovies = [];
     }
     if (!searchValueSaved) {
-      filteredSavedMovies = savedMovies
+      filteredSavedMovies = savedMovies;
     }
     if (searchValue) {
       filteredMovies = filteredMovies.filter((movie) =>
@@ -205,8 +204,8 @@ function App() {
     }
     if (searchValueSaved) {
       filteredSavedMovies = filteredSavedMovies.filter((movie) =>
-      movie.nameRU.toLowerCase().includes(searchValueSaved.toLowerCase())
-    );
+        movie.nameRU.toLowerCase().includes(searchValueSaved.toLowerCase())
+      );
     }
     if (checkBox) {
       filteredMovies = filteredMovies.filter((movie) => movie.duration <= 40);
@@ -220,13 +219,19 @@ function App() {
     }
     setFilteredMovies(filteredMovies);
     setFilteredSavedMovies(filteredSavedMovies);
-  }, [checkBox, searchValue, searchValueSaved, movies, savedMovies, location.pathname]);
+  }, [
+    checkBox,
+    searchValue,
+    searchValueSaved,
+    movies,
+    savedMovies,
+    location.pathname,
+  ]);
 
   React.useEffect(() => {
     checkToken();
     setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")) || []);
   }, []);
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -276,13 +281,12 @@ function App() {
                   <Movies
                     movies={filteredMovies}
                     page="movies"
-                    searchValue={searchValue}
                     setSearchValue={setSearchValue}
                     checkBox={checkBox}
                     setCheckBox={setCheckBox}
                     handleCheckbox={handleCheckbox}
                     onLikeFilm={handleLikeMovie}
-                    isSavedMovie={isSavedMovie}
+                    isMovieSaved={isMovieSaved}
                     isPreloaderActive={isPreloaderActive}
                     noMovieError={noMovieError}
                     noMovieErrorText={noMovieErrorText}

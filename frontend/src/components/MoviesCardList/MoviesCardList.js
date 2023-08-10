@@ -9,7 +9,7 @@ function MoviesCardList({
   page,
   onLikeFilm,
   onDeleteFilm,
-  isSavedMovie,
+  isMovieSaved,
   isPreloaderActive,
   noMovieError,
   noMovieErrorText,
@@ -52,7 +52,7 @@ function MoviesCardList({
         page={page}
         onLikeFilm={onLikeFilm}
         onDeleteFilm={onDeleteFilm}
-        isSavedMovie={isSavedMovie}
+        isMovieSaved={isMovieSaved}
       />
     </li>
   ));
@@ -61,7 +61,11 @@ function MoviesCardList({
     <section>
       <ul className="movies-cardlist">{moviesElements}</ul>
       {isPreloaderActive ? <Preloader /> : <></>}
-      {noMovieError ? <NoMovieError noMovieErrorText={noMovieErrorText}/> : <></>}
+      {noMovieError ? (
+        <NoMovieError noMovieErrorText={noMovieErrorText} />
+      ) : (
+        <></>
+      )}
       <button
         type="button"
         aria-label="Загрузить еще фильмы"
