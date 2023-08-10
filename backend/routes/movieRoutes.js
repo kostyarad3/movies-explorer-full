@@ -9,11 +9,11 @@ router.post(
   '/',
   celebrate({
     body: Joi.object().keys({
-      country: Joi.string().required().min(2).max(30),
-      director: Joi.string().required().min(2).max(30),
+      country: Joi.string().required().min(2).max(100),
+      director: Joi.string().required().min(2).max(50),
       duration: Joi.number().required(),
       year: Joi.number().required(),
-      description: Joi.string().required().min(2).max(100),
+      description: Joi.string().required().min(2).max(10000),
       image: Joi.string().required().pattern(LINK_REGEX),
       trailer: Joi.string().required().pattern(LINK_REGEX),
       nameRU: Joi.string().required(),

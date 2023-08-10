@@ -84,6 +84,28 @@
   }
 }
 
+.search-form__input-error {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 80px;
+  display: block;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  color: #EE3465;
+}
+
+@media screen and (min-width: 650px ) {
+  .search-form__input-error {
+    width: auto;
+    text-align: unset;
+    left: 63px;
+    font-size: 12px;
+  }
+}
+
 .search-form__button {
   padding: 0;
   position: absolute;
@@ -140,6 +162,7 @@
 }
 
 .search-form__filter-button {
+  display: block;
   align-self: center;
   padding: 0;
   border: none;

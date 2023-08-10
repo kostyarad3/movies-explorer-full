@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+// const cors = require('cors');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
 const cors = require('./middlewares/cors');

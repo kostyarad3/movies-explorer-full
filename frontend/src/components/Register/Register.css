@@ -144,6 +144,11 @@
   opacity: .5;
 }
 
+.register-form__button_inactive:hover {
+  cursor: default;
+  opacity: .5;
+}
+
 .register-form__text {
   color: #A0A0A0;
   margin: 14px 0;

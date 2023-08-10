@@ -4,6 +4,7 @@ const allowedCors = [
   'http://api.movies.kostyarad.nomoredomains.xyz',
   'http://movies.kostyarad.nomoredomains.xyz',
   'https://api.movies.kostyarad.nomoredomains.xyz',
+  'https://api.nomoreparties.co/beatfilm-movies',
   'http://localhost:3000',
   'http://localhost:3001',
 ];

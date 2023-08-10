@@ -1,15 +1,27 @@
 import React from "react";
 
-function MoviesCard({ movie, page }) {
-  const [isButtonActive, setIsButtonActive] = React.useState(false);
+function MoviesCard({ movie, page, onLikeFilm, onDeleteFilm, isSavedMovie }) {
+  function handleSaveFilm(evt) {
+    const saveButton = evt.target.closest(".movie__button");
+    saveButton.classList.toggle("movie__button_active");
+    if (saveButton.classList.contains("movie__button_active")) {
+      movie.selected = true;
+    } else movie.selected = false;
+    onLikeFilm(movie);
+  }
 
-  function handleSaveFilm() {
-    setIsButtonActive(!isButtonActive);
+  function handleDeleteFilm() {
+    movie.selected = false
+    onDeleteFilm(movie);
   }
 
   const minutes = movie.duration % 60;
   const hours = (movie.duration - minutes) / 60;
   const filmDuration = `${hours}ч ${minutes}м`;
+
+  const src = movie.image.formats
+    ? `https://api.nomoreparties.co/${movie.image.url}`
+    : movie.image;
 
   return (
     <>
@@ -18,19 +30,23 @@ function MoviesCard({ movie, page }) {
       {page === "movies" ? (
         <button
           className={`button movie__button ${
-            isButtonActive ? "movie__button_active" : ""
+            isSavedMovie(movie) ? "movie__button_active" : ""
           }`}
           onClick={handleSaveFilm}
           type="button"
           aria-label="Сохранить в рекомендации"
         ></button>
       ) : (
-        <button className="button saved-movie__button" type="button"></button>
+        <button
+          onClick={handleDeleteFilm}
+          className="button saved-movie__button"
+          type="button"
+        ></button>
       )}
       <img
         className="movie__image"
-        alt={`Картинка фильма ${movie.name} режиссера ${movie.director}`}
-        src={movie.image}
+        alt={`Картинка фильма ${movie.nameRU} режиссера ${movie.director}`}
+        src={src}
       />
     </>
   );

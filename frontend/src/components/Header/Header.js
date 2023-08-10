@@ -1,7 +1,7 @@
 import React from "react";
 import headerLogo from "../../images/logo-header.svg";
 import Navigation from "../Navigation/Navigation";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useWindowWidth from "../../hooks/useWindowWidth";
 
 function Header({ loggedIn }) {
@@ -37,7 +37,7 @@ function Header({ loggedIn }) {
       <nav className="header__films">
         <ul className="header__list">
           <li className="header__list-item">
-            <Link to="/movies" replace className="link header__film">
+            <Link to="/movies" className="link header__film">
               Фильмы
             </Link>
           </li>

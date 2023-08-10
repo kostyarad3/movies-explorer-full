@@ -136,6 +136,11 @@
   opacity: .5;
 }
 
+.register-form__button_inactive:hover {
+  cursor: default;
+  opacity: .5;
+}
+
 @media screen and (min-width: 650px ) {
   .login-form__button  {
     font-size: 14px;

@@ -34,6 +34,7 @@
 }
 
 .profile-form__container {
+  position: relative;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -66,7 +67,7 @@
 }
 
 .profile-form__input {
-  direction: rtl;
+  text-align: right;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
@@ -83,9 +84,38 @@
   border-bottom: 1px solid #2BE080;
 }
 
+.profile-form__input_invalid:focus {
+  border-bottom: 1px solid #EE3465;
+}
+
 .profile-form__input:disabled {
   background: transparent;
   color: #000;
+}
+
+
+.profile-form__input-error {
+  position: absolute;
+  max-width: 204px;
+  text-align: right;
+  right: 0;
+  display: block;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: auto;
+  min-height: 19px;
+  color: #EE3465;
+  padding-top: 6px;
+}
+
+.profile-form__input-error_name {
+  top: -40px;
+}
+
+.profile-form__input-error_email {
+  top: 40px;
 }
 
 .profile-form__error {

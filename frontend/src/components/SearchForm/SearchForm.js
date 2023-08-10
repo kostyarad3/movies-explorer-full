@@ -1,19 +1,34 @@
 import React from "react";
 import useValidateForm from "../../hooks/useValidateForm";
 
-function SearchForm({ movies, handleSearch }) {
-  const [isFilterOn, setIsFilterOn] = React.useState(false);
+function SearchForm({
+  setSearchValue,
+  checkBox,
+  handleCheckbox,
+  searchValue,
+  page,
+}) {
   const { handleInputChange, inputValues } = useValidateForm();
 
-  function handleFilter(evt) {
-    evt.preventDefault();
-    setIsFilterOn(!isFilterOn);
-  }
+  React.useEffect(() => {
+    if (page === "movies") {
+      inputValues.inputValue = localStorage.getItem("searchValue")
+      setSearchValue(inputValues.inputValue)
+    } else {
+      inputValues.inputValue = localStorage.getItem("searchValueSaved")
+      setSearchValue(inputValues.inputValue)
+    }
+  }, [])
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    const { searchValue } = inputValues;
-    handleSearch(searchValue, movies)
+    if (page === "movies") {
+      localStorage.setItem("searchValue", inputValues.inputValue)
+      setSearchValue(inputValues.inputValue)
+    } else {
+      localStorage.setItem("searchValueSaved", inputValues.inputValue)
+      setSearchValue(inputValues.inputValue)
+    }
   }
 
   return (
@@ -21,20 +36,28 @@ function SearchForm({ movies, handleSearch }) {
       <input
         placeholder="Фильм"
         className="search-form__input"
-        name="searchValue"
-        required
-        id="search"
-        value={inputValues?.searchValue || ""}
+        name="inputValue"
+        id="inputValue"
+        value={inputValues.inputValue || ""}
         onChange={handleInputChange}
       ></input>
-      <button type="submit" aria-label="Поиск фильмов" className="button search-form__button"></button>
+      <label className="search-form__input-error">
+        {!inputValues.searchValue &&
+          !localStorage.getItem("searchValue") &&
+          "Нужно ввести ключевое слово"}
+      </label>
+      <button
+        type="submit"
+        aria-label="Поиск фильмов"
+        className="button search-form__button"
+      ></button>
       <div className="serch-form__filter-container">
         <button
           type="checkbox"
-          onClick={handleFilter}
+          onClick={handleCheckbox}
           aria-label="Кнопка включения фильтра"
           className={`button search-form__filter-button ${
-            isFilterOn && "search-form__filter-button_active"
+            checkBox && "search-form__filter-button_active"
           }`}
         ></button>
         <p className="search-form__filter-text">Короткометражки</p>

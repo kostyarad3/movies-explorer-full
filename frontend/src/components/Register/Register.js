@@ -2,6 +2,7 @@ import React from "react";
 import headerLogo from "../../images/logo-header.svg";
 import { Link } from "react-router-dom";
 import useValidateForm from "../../hooks/useValidateForm";
+import Preloader from "../Preloader/Preloader";
 
 function Register({ handleRegistration, RegisterErrorText }) {
   const { inputValues, inputErrors, isFormValid, handleInputChange } =

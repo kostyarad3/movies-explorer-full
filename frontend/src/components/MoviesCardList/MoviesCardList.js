@@ -1,50 +1,76 @@
 import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import useWindowWidth from '../../hooks/useWindowWidth'
+import useWindowWidth from "../../hooks/useWindowWidth";
+import Preloader from "../Preloader/Preloader";
+import NoMovieError from "../NoMovieError/NoMovieError";
 
-function MoviesCardList({ movies, page}) {
+function MoviesCardList({
+  movies,
+  page,
+  onLikeFilm,
+  onDeleteFilm,
+  isSavedMovie,
+  isPreloaderActive,
+  noMovieError,
+  noMovieErrorText,
+}) {
   const [numberOfMovies, setNubmerOfMovies] = React.useState();
   const [maxNumberOfMovies, setMaxNubmerOfMovies] = React.useState();
   const windowWidth = useWindowWidth();
   //изменяет количество фильмов при отображении страницы
   React.useEffect(() => {
     setNubmerOfMovies(movies.length);
-  }, [page]);
+  }, [page, movies]);
   // измененние количества доступных фильмов при отображениее
   React.useEffect(() => {
+    if (page === "savedMovies") {
+      return setMaxNubmerOfMovies(movies.length);
+    }
     if (windowWidth < 650) {
       setMaxNubmerOfMovies(5);
     } else if (windowWidth < 900) {
       setMaxNubmerOfMovies(8);
-    } else {
+    } else if (windowWidth > 900) {
       setMaxNubmerOfMovies(12);
     }
   }, [windowWidth]);
   // функция добавления фильмов
   function addMoreFilms() {
     if (windowWidth < 650) {
-      setMaxNubmerOfMovies(maxNumberOfMovies + 3);
+      setMaxNubmerOfMovies(maxNumberOfMovies + 2);
     } else if (windowWidth < 900) {
-      setMaxNubmerOfMovies(maxNumberOfMovies + 3);
-    } else {
+      setMaxNubmerOfMovies(maxNumberOfMovies + 2);
+    } else if (windowWidth > 900) {
       setMaxNubmerOfMovies(maxNumberOfMovies + 3);
     }
   }
 
   const moviesElements = movies.slice(0, maxNumberOfMovies).map((movie) => (
-    <li key={movie.movieId} className="movie">
-      <MoviesCard movie={movie} page={page} />
+    <li key={movie.id || movie.movieId} className="movie">
+      <MoviesCard
+        movie={movie}
+        page={page}
+        onLikeFilm={onLikeFilm}
+        onDeleteFilm={onDeleteFilm}
+        isSavedMovie={isSavedMovie}
+      />
     </li>
   ));
 
   return (
     <section>
       <ul className="movies-cardlist">{moviesElements}</ul>
+      {isPreloaderActive ? <Preloader /> : <></>}
+      {noMovieError ? <NoMovieError noMovieErrorText={noMovieErrorText}/> : <></>}
       <button
         type="button"
         aria-label="Загрузить еще фильмы"
         className={`button movies-cardlist__button ${
-          numberOfMovies <= 3 ? "movies-cardlist__button_hidden" : ""
+          numberOfMovies <= 3 ||
+          numberOfMovies <= maxNumberOfMovies ||
+          page === "savedMovies"
+            ? "movies-cardlist__button_hidden"
+            : ""
         }`}
         onClick={addMoreFilms}
       >

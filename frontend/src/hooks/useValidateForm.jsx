@@ -6,6 +6,7 @@ export default function useValidateForm() {
   const [isFormValid, setIsFormValid] = React.useState(false);
   const [inputErrors, setInputErrors] = React.useState({});
 
+
   const handleInputChange = evt => {
     const { name, value } = evt.target;
 

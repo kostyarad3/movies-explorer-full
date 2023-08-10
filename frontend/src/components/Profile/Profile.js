@@ -4,11 +4,20 @@ import useValidateForm from "../../hooks/useValidateForm";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
-  const { handleInputChange, setInputValues, inputValues, isFormValid } =
-    useValidateForm();
+  const {
+    handleInputChange,
+    setInputValues,
+    inputValues,
+    inputErrors,
+    isFormValid,
+  } = useValidateForm();
   const currentUser = React.useContext(CurrentUserContext);
   const [areInputsdisabled, setAreInputsdisabled] = React.useState(true);
   const [isEditing, setIsEditing] = React.useState(false);
+
+  React.useEffect(() => {
+    setInputValues({ name: currentUser.name, email: currentUser.email });
+  }, []);
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -16,17 +25,15 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
     onUpdateUser(name, email);
     setIsEditing(!isEditing);
     setAreInputsdisabled(!areInputsdisabled);
+    return inputValues;
   }
-
-  React.useEffect(() => {
-    setInputValues({ name: currentUser.name, email: currentUser.email });
-  }, []);
 
   function handleEditClick() {
     setAreInputsdisabled(!areInputsdisabled);
     setIsEditing(!isEditing);
   }
 
+  console.log(isFormValid);
   return (
     <section className="profile">
       <form className="profile-form" onSubmit={handleSubmit}>
@@ -34,7 +41,9 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
         <div className="profile-form__container">
           <p className="profile-form__text">Имя</p>
           <input
-            className="profile-form__input"
+            className={`profile-form__input ${
+              inputErrors.name ? "profile-form__input_invalid" : ""
+            }`}
             type="name"
             name="name"
             id="name"
@@ -45,11 +54,16 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
             value={inputValues?.name || ""}
             onChange={handleInputChange}
           />
+          <label className="profile-form__input-error profile-form__input-error_name">
+            {inputErrors.name}
+          </label>
         </div>
         <div className="profile-form__container">
           <p className="profile-form__text">E-mail</p>
           <input
-            className="profile-form__input"
+            className={`profile-form__input ${
+              inputErrors.email ? "profile-form__input_invalid" : ""
+            }`}
             type="email"
             name="email"
             placeholder="E-mail"
@@ -60,16 +74,26 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
             value={inputValues?.email || ""}
             onChange={handleInputChange}
           />
+          <label className="profile-form__input-error profile-form__input-error_email">
+            {inputErrors.email}
+          </label>
         </div>
         {isEditing ? (
           <>
             <span className="profile-form__error">{ProfileErrorText}</span>
             <button
-              disabled={!isFormValid}
+              disabled={
+                inputValues.name === currentUser.name &&
+                inputValues.email === currentUser.email
+              }
               type="submit"
               aria-label="Сохранение данных профиля"
               className={`button profile-form__save-button ${
-                !isFormValid && "profile-form__save-button_inactive"
+                (inputValues.name === currentUser.name &&
+                  inputValues.email === currentUser.email) ||
+                !isFormValid
+                  ? "profile-form__save-button_inactive"
+                  : ""
               }`}
             >
               Сохранить

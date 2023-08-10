@@ -39,5 +39,7 @@
 @import url('../src/components/SavedMovies/SavedMovies.css');
 /* MoviesCard */
 @import url('../src/components/MoviesCard/MoviesCard.css');
+/* NoMovieError */
+@import url('../src/components/NoMovieError/NoMovieError.css');
 
 /* * { outline: 1px solid red; } */
