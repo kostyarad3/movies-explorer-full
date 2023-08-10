@@ -15,6 +15,7 @@
 ## Ссылки на проект
 
 - Адрес репозитория: https://github.com/kostyarad3/movies-explorer-full
+- Ссылка на пул-реквест: 
 - IP-адрес 158.160.49.179
 - Frontend https://movies.kostyarad.nomoredomains.xyz/
 - Backend https://api.movies.kostyarad.nomoredomains.xyz/
