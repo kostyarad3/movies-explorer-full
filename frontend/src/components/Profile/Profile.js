@@ -32,8 +32,7 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
     setAreInputsdisabled(!areInputsdisabled);
     setIsEditing(!isEditing);
   }
-
-  console.log(isFormValid);
+  
   return (
     <section className="profile">
       <form className="profile-form" onSubmit={handleSubmit}>
