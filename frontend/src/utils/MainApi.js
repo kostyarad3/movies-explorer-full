@@ -56,7 +56,6 @@ export function editUserInfo(name, email) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
     },
-    credentials: this._credentials,
     body: JSON.stringify({
       name: name,
       email: email,
