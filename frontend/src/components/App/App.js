@@ -139,17 +139,21 @@ function App() {
         }
       });
     } else {
-      MainApi.saveMovie(movie).then((data) => {
-        const savedMovie = data.movie;
-        //чтобы при множественном клике на сохранить заново не добавлялся фильм в сохраненные
-        const newSavedMovies = savedMovies.filter(
-          (item) => item.movieId !== savedMovie.movieId
-        );
-        setSavedMovies([savedMovie, ...newSavedMovies]);
-        localStorage.setItem("savedMovies", [
-          JSON.stringify([savedMovie, ...newSavedMovies]),
-        ]);
-      });
+      MainApi.saveMovie(movie)
+        .then((data) => {
+          const savedMovie = data.movie;
+          //чтобы при множественном клике на сохранить заново не добавлялся фильм в сохраненные
+          const newSavedMovies = savedMovies.filter(
+            (item) => item.movieId !== savedMovie.movieId
+          );
+          setSavedMovies([savedMovie, ...newSavedMovies]);
+          localStorage.setItem("savedMovies", [
+            JSON.stringify([savedMovie, ...newSavedMovies]),
+          ]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
@@ -167,13 +171,17 @@ function App() {
   }
 
   function handleDeleteMovie(movie) {
-    MainApi.deleteMovie(movie._id).then(() => {
-      const newSavedMovies = savedMovies.filter(
-        (item) => item.movieId !== movie.movieId
-      );
-      localStorage.setItem("savedMovies", JSON.stringify(newSavedMovies));
-      setSavedMovies(newSavedMovies);
-    });
+    MainApi.deleteMovie(movie._id)
+      .then(() => {
+        const newSavedMovies = savedMovies.filter(
+          (item) => item.movieId !== movie.movieId
+        );
+        localStorage.setItem("savedMovies", JSON.stringify(newSavedMovies));
+        setSavedMovies(newSavedMovies);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   // EFFECTS
   React.useEffect(() => {
@@ -208,10 +216,10 @@ function App() {
 
   React.useEffect(() => {
     let filteredMovies = movies;
-    setIsPreloaderActive(true)
+    setIsPreloaderActive(true);
     setTimeout(() => {
-      setIsPreloaderActive(false)
-    }, 400)
+      setIsPreloaderActive(false);
+    }, 400);
     if (!searchValue) {
       filteredMovies = [];
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
