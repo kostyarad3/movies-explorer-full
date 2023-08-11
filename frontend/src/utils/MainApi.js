@@ -1,5 +1,5 @@
-// export const BASE_URL = "https://api.movies.kostyarad.nomoredomains.xyz";
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://api.movies.kostyarad.nomoredomains.xyz";
+// export const BASE_URL = "http://localhost:3000";
 
 function getResponseData(res) {
   if (res.ok) {

@@ -208,6 +208,10 @@ function App() {
 
   React.useEffect(() => {
     let filteredMovies = movies;
+    setIsPreloaderActive(true)
+    setTimeout(() => {
+      setIsPreloaderActive(false)
+    }, 400)
     if (!searchValue) {
       filteredMovies = [];
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
