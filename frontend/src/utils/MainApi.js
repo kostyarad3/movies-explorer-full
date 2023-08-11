@@ -1,5 +1,5 @@
-export const BASE_URL = "https://api.movies.kostyarad.nomoredomains.xyz";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://api.movies.kostyarad.nomoredomains.xyz";
+export const BASE_URL = "http://localhost:3000";
 
 function getResponseData(res) {
   if (res.ok) {
@@ -83,12 +83,26 @@ export function saveMovie(movie) {
       year: movie.year,
       description: movie.description,
       image: `https://api.nomoreparties.co${movie.image.url}`,
-      trailer: movie.trailerLink,
+      trailerLink: movie.trailerLink,
       nameRU: movie.nameRU,
       nameEN: movie.nameEN,
       thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
       movieId: movie.id,
     }),
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    return Promise.reject(`Где-то ошибочка:( : ${response.status}`);
+  });
+}
+
+export function getSavedMovies() {
+  return fetch(`${BASE_URL}/movies`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
   }).then((response) => {
     if (response.ok) {
       return response.json();

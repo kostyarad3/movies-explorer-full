@@ -118,18 +118,6 @@
   top: 40px;
 }
 
-.profile-form__error {
-  display: block;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: auto;
-  min-height: 19px;
-  color: #FF004C;
-  padding-bottom: 6px;
-}
-
 .profile-form__link {
   margin: 0 0 16px;
   font-family: 'Inter';

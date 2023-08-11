@@ -20,7 +20,12 @@ function MoviesCardList({
   //изменяет количество фильмов при отображении страницы
   React.useEffect(() => {
     setNubmerOfMovies(movies.length);
-  }, [page, movies]);
+    if (page === "movies") {
+      movies = JSON.parse(localStorage.getItem("filteredMovies")) || [];
+    } else {
+      movies = JSON.parse(localStorage.getItem("savedMovies"));
+    }
+  }, [page, movies, window.location.href]);
   // измененние количества доступных фильмов при отображениее
   React.useEffect(() => {
     if (page === "savedMovies") {
@@ -59,8 +64,8 @@ function MoviesCardList({
 
   return (
     <section>
-      <ul className="movies-cardlist">{moviesElements}</ul>
       {isPreloaderActive ? <Preloader /> : <></>}
+      <ul className="movies-cardlist">{moviesElements}</ul>
       {noMovieError ? (
         <NoMovieError noMovieErrorText={noMovieErrorText} />
       ) : (

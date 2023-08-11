@@ -1,13 +1,12 @@
 import React from "react";
 
 function MoviesCard({ movie, page, onLikeFilm, onDeleteFilm, isMovieSaved }) {
-  function handleSaveFilm(evt) {
-    const saveButton = evt.target.closest(".movie__button");
-    saveButton.classList.toggle("movie__button_active");
-    if (saveButton.classList.contains("movie__button_active")) {
-      movie.selected = true;
-    } else movie.selected = false;
-    onLikeFilm(movie);
+  function handleSaveFilm() {
+    if (isMovieSaved(movie)) {
+      onLikeFilm(movie);
+    } else {
+      onLikeFilm(movie);
+    }
   }
 
   function handleDeleteFilm() {
@@ -43,11 +42,13 @@ function MoviesCard({ movie, page, onLikeFilm, onDeleteFilm, isMovieSaved }) {
           type="button"
         ></button>
       )}
-      <img
-        className="movie__image"
-        alt={`Картинка фильма ${movie.nameRU} режиссера ${movie.director}`}
-        src={src}
-      />
+      <a className="movie__link" href={movie.trailerLink} target="blank">
+        <img
+          className="movie__image"
+          alt={`Картинка фильма ${movie.nameRU} режиссера ${movie.director}`}
+          src={src}
+        />
+      </a>
     </>
   );
 }

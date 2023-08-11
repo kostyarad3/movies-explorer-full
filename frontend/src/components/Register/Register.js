@@ -2,11 +2,15 @@ import React from "react";
 import headerLogo from "../../images/logo-header.svg";
 import { Link } from "react-router-dom";
 import useValidateForm from "../../hooks/useValidateForm";
-import Preloader from "../Preloader/Preloader";
 
 function Register({ handleRegistration, RegisterErrorText }) {
-  const { inputValues, inputErrors, isFormValid, handleInputChange } =
-    useValidateForm();
+  const {
+    inputValues,
+    inputErrors,
+    isFormValid,
+    handleInputChange,
+    emailError,
+  } = useValidateForm();
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -30,7 +34,6 @@ function Register({ handleRegistration, RegisterErrorText }) {
           placeholder="Имя"
           required
           minLength="2"
-          maxLength="40"
           value={inputValues?.name || ""}
           onChange={handleInputChange}
         />
@@ -49,7 +52,7 @@ function Register({ handleRegistration, RegisterErrorText }) {
           onChange={handleInputChange}
         />
         <label className="register-form__input-error">
-          {inputErrors.email}
+          {inputErrors.email || emailError}
         </label>
         <p className="register-form__input-name">Пароль</p>
         <input

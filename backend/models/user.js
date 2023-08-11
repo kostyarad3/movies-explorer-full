@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'Александр',
     minlength: 2,
-    maxlength: 30,
+    maxlength: 60,
   },
 });
 

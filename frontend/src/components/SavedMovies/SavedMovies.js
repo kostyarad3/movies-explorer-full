@@ -6,7 +6,8 @@ function SavedMovies({
   savedMovies,
   page,
   setSearchValue,
-  checkBox,
+  checkBoxSavedMovies,
+  setCheckBoxSavedMovies,
   onDeleteFilm,
   handleCheckbox,
 }) {
@@ -14,9 +15,9 @@ function SavedMovies({
     <section className="saved-movies">
       <SearchForm
         setSearchValue={setSearchValue}
-        checkBox={checkBox}
-        handleCheckbox={handleCheckbox}
+        checkBox={checkBoxSavedMovies}
         page={page}
+        setCheckBox={setCheckBoxSavedMovies}
       />
       <MoviesCardList
         movies={savedMovies}

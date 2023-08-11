@@ -3,13 +3,14 @@ import React from "react";
 import useValidateForm from "../../hooks/useValidateForm";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
+function Profile({ onUpdateUser, handleExitClick }) {
   const {
     handleInputChange,
     setInputValues,
     inputValues,
     inputErrors,
     isFormValid,
+    emailError,
   } = useValidateForm();
   const currentUser = React.useContext(CurrentUserContext);
   const [areInputsdisabled, setAreInputsdisabled] = React.useState(true);
@@ -32,7 +33,7 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
     setAreInputsdisabled(!areInputsdisabled);
     setIsEditing(!isEditing);
   }
-  
+
   return (
     <section className="profile">
       <form className="profile-form" onSubmit={handleSubmit}>
@@ -49,7 +50,6 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
             placeholder="Имя"
             minLength="2"
             disabled={areInputsdisabled}
-            maxLength="20"
             value={inputValues?.name || ""}
             onChange={handleInputChange}
           />
@@ -74,12 +74,11 @@ function Profile({ onUpdateUser, handleExitClick, ProfileErrorText }) {
             onChange={handleInputChange}
           />
           <label className="profile-form__input-error profile-form__input-error_email">
-            {inputErrors.email}
+            {inputErrors.email || emailError}
           </label>
         </div>
         {isEditing ? (
           <>
-            <span className="profile-form__error">{ProfileErrorText}</span>
             <button
               disabled={
                 inputValues.name === currentUser.name &&

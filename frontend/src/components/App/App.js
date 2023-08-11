@@ -14,6 +14,9 @@ import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import Popup from "../Popup/Popup";
+import PopupSuccess from "../../images/infotooltip-success.svg";
+import PopupFailure from "../../images/infotooltip-failure.svg";
 
 function App() {
   const navigate = useNavigate();
@@ -21,12 +24,12 @@ function App() {
   // STATES
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [profileErrorText, setProfileErrorText] = React.useState(" ");
   const [loginErrorText, setLoginErrorText] = React.useState(" ");
   const [registerErrorText, setRegisterErrorText] = React.useState(" ");
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [checkBox, setCheckBox] = React.useState(false);
+  const [checkBoxMovies, setCheckBoxMovies] = React.useState(false);
+  const [checkBoxSavedMovies, setCheckBoxSavedMovies] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchValueSaved, setSearchValueSaved] = React.useState("");
   const [filteredMovies, setFilteredMovies] = React.useState([]);
@@ -34,11 +37,12 @@ function App() {
   const [isPreloaderActive, setIsPreloaderActive] = React.useState(false);
   const [noMovieError, setNoMovieError] = React.useState(false);
   const [noMovieErrorText, setNoMovieErrorText] = React.useState("");
+  const [popupText, setPopupText] = React.useState("");
+  const [popupImage, setPopupImage] = React.useState(null);
+  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   //FUNCTIONS
-  function handleCheckbox(evt) {
-    evt.preventDefault();
-    setCheckBox(!checkBox);
-    localStorage.setItem("checkBox", JSON.stringify(!checkBox));
+  function handleClosePopup() {
+    setIsPopupOpen(false);
   }
 
   function handleRegistration(name, email, password) {
@@ -64,7 +68,7 @@ function App() {
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          navigate("/", { replace: true });
+          navigate("/movies", { replace: true });
         }
       })
       .catch((err) => {
@@ -83,14 +87,22 @@ function App() {
     MainApi.editUserInfo(name, email)
       .then((updatedUserInfo) => {
         setCurrentUser(updatedUserInfo);
+        setPopupImage(PopupSuccess);
+        setPopupText("Изменения данных успешны!");
+        setIsPopupOpen(true);
       })
       .catch((err) => {
         if (err) {
           console.log(err);
-          setProfileErrorText("При обновлении пользователя произошла ошибка");
+          setPopupImage(PopupFailure);
+          setPopupText("При обновлении пользователя произошла ошибка");
+          setIsPopupOpen(true);
         }
         if (err.includes(409)) {
-          setProfileErrorText("Пользователь с таким email уже существует.");
+          console.log(err);
+          setPopupImage(PopupFailure);
+          setPopupText("Пользователь с таким email уже существует.");
+          setIsPopupOpen(true);
         }
       });
   }
@@ -119,13 +131,13 @@ function App() {
   }
 
   function handleLikeMovie(movie) {
-    // проверить, сохранен ли фильм, если да - то удалитьиз сохраненных
+    // проверить, сохранен ли фильм, если да - то удалить из сохраненных
     if (isMovieSaved(movie)) {
-      const newArr = savedMovies.filter(function (item) {
-        return item.movieId !== movie.id;
+      savedMovies.map((item) => {
+        if (item.movieId === movie.id) {
+          handleDeleteMovie(item);
+        }
       });
-      setSavedMovies(newArr);
-      localStorage.setItem("savedMovies", [JSON.stringify(newArr)]);
     } else {
       MainApi.saveMovie(movie).then((data) => {
         const savedMovie = data.movie;
@@ -139,6 +151,15 @@ function App() {
         ]);
       });
     }
+  }
+
+  function getSavedMovies() {
+    MainApi.getSavedMovies()
+      .then((data) => {
+        setSavedMovies(data.data);
+        localStorage.setItem("savedMovies", JSON.stringify(data.data));
+      })
+      .catch((err) => console.log(err));
   }
 
   function isMovieSaved(movie) {
@@ -157,13 +178,12 @@ function App() {
   // EFFECTS
   React.useEffect(() => {
     if (loggedIn) {
-      setCheckBox(JSON.parse(localStorage.getItem("checkBox")) || false);
+      getSavedMovies();
       setIsPreloaderActive(true);
       moviesApi
         .getMovies()
         .then((data) => {
-          localStorage.setItem("movies", JSON.stringify(data));
-          setMovies(JSON.parse(localStorage.getItem("movies")));
+          setMovies(data);
         })
         .catch((err) => {
           setNoMovieError(true);
@@ -171,7 +191,7 @@ function App() {
             `Во время запроса произошла ошибка.
              Возможно, проблема с соединением или
              сервер недоступен.
-            Подождите немного и попробуйте ещё раз`
+             Подождите немного и попробуйте ещё раз`
           );
           console.log(err);
         })
@@ -185,52 +205,60 @@ function App() {
         .catch((err) => console.log(err));
     }
   }, [loggedIn]);
-  // эффект для поиска и фильтрации
+
   React.useEffect(() => {
     let filteredMovies = movies;
-    let filteredSavedMovies = savedMovies;
     if (!searchValue) {
       filteredMovies = [];
-    }
-    if (!searchValueSaved) {
-      filteredSavedMovies = savedMovies;
+      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
     }
     if (searchValue) {
       filteredMovies = filteredMovies.filter((movie) =>
         movie.nameRU.toLowerCase().includes(searchValue.toLowerCase())
       );
+      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
       setNoMovieError(false);
       setNoMovieErrorText("");
+    }
+    if (filteredMovies.length === 0 && searchValue) {
+      setNoMovieError(true);
+      setNoMovieErrorText("Ничего не найдено");
+    }
+    setFilteredMovies(filteredMovies);
+  }, [searchValue, movies]);
+
+  React.useEffect(() => {
+    let filteredSavedMovies = savedMovies;
+    if (!searchValueSaved) {
+      filteredSavedMovies = savedMovies;
     }
     if (searchValueSaved) {
       filteredSavedMovies = filteredSavedMovies.filter((movie) =>
         movie.nameRU.toLowerCase().includes(searchValueSaved.toLowerCase())
       );
+      setNoMovieError(false);
+      setNoMovieErrorText("");
     }
-    if (checkBox) {
+    setFilteredSavedMovies(filteredSavedMovies);
+  }, [searchValueSaved, savedMovies, location]);
+
+  React.useEffect(() => {
+    let filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
+    let filteredSavedMovies = savedMovies;
+    if (checkBoxMovies) {
       filteredMovies = filteredMovies.filter((movie) => movie.duration <= 40);
+    }
+    if (checkBoxSavedMovies) {
       filteredSavedMovies = filteredSavedMovies.filter(
         (movie) => movie.duration <= 40
       );
     }
-    if (filteredMovies.length === 0) {
-      setNoMovieError(true);
-      setNoMovieErrorText("Ничего не найдено");
-    }
     setFilteredMovies(filteredMovies);
     setFilteredSavedMovies(filteredSavedMovies);
-  }, [
-    checkBox,
-    searchValue,
-    searchValueSaved,
-    movies,
-    savedMovies,
-    location.pathname,
-  ]);
+  }, [checkBoxMovies, checkBoxSavedMovies, movies]);
 
   React.useEffect(() => {
     checkToken();
-    setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")) || []);
   }, []);
 
   return (
@@ -251,24 +279,28 @@ function App() {
           <Route
             path="/signin"
             element={
-              <main>
-                <Login
-                  handleLogin={handleLogin}
-                  LoginErrorText={loginErrorText}
-                />
-              </main>
+              <ProtectedRoute loggedIn={!loggedIn}>
+                <main>
+                  <Login
+                    handleLogin={handleLogin}
+                    LoginErrorText={loginErrorText}
+                  />
+                </main>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/signup"
             element={
-              <main>
-                <Register
-                  handleRegistration={handleRegistration}
-                  RegisterErrorText={registerErrorText}
-                />
-              </main>
+              <ProtectedRoute loggedIn={!loggedIn}>
+                <main>
+                  <Register
+                    handleRegistration={handleRegistration}
+                    RegisterErrorText={registerErrorText}
+                  />
+                </main>
+              </ProtectedRoute>
             }
           />
 
@@ -282,10 +314,10 @@ function App() {
                     movies={filteredMovies}
                     page="movies"
                     setSearchValue={setSearchValue}
-                    checkBox={checkBox}
-                    setCheckBox={setCheckBox}
-                    handleCheckbox={handleCheckbox}
+                    checkBoxMovies={checkBoxMovies}
+                    setCheckBoxMovies={setCheckBoxMovies}
                     onLikeFilm={handleLikeMovie}
+                    onDeleteFilm={handleDeleteMovie}
                     isMovieSaved={isMovieSaved}
                     isPreloaderActive={isPreloaderActive}
                     noMovieError={noMovieError}
@@ -308,9 +340,9 @@ function App() {
                     page="savedMovies"
                     setSearchValue={setSearchValueSaved}
                     searchValue={searchValueSaved}
-                    checkBox={checkBox}
+                    checkBoxSavedMovies={checkBoxSavedMovies}
+                    setCheckBoxSavedMovies={setCheckBoxSavedMovies}
                     onDeleteFilm={handleDeleteMovie}
-                    handleCheckbox={handleCheckbox}
                   />
                 </main>
                 <Footer />
@@ -327,7 +359,6 @@ function App() {
                   <Profile
                     onUpdateUser={handleUpdateUser}
                     handleExitClick={handleExitClick}
-                    ProfileErrorText={profileErrorText}
                   />
                 </main>
               </ProtectedRoute>
@@ -343,6 +374,12 @@ function App() {
             }
           />
         </Routes>
+        <Popup
+          text={popupText}
+          image={popupImage}
+          isOpen={isPopupOpen}
+          onClose={handleClosePopup}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

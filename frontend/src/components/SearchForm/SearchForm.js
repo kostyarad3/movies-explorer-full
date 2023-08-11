@@ -1,20 +1,44 @@
 import React from "react";
 import useValidateForm from "../../hooks/useValidateForm";
 
-function SearchForm({ setSearchValue, checkBox, handleCheckbox, page }) {
+function SearchForm({ setSearchValue, checkBox, page, setCheckBox }) {
   const { handleInputChange, inputValues } = useValidateForm();
+  const [isValueEmptyText, setIsValueEmptyText] = React.useState("");
 
   React.useEffect(() => {
     if (page === "movies") {
       inputValues.inputValue = localStorage.getItem("searchValue");
-      setSearchValue(inputValues.inputValue);
+      setSearchValue(localStorage.getItem("searchValue"));
+      if (
+        !localStorage.getItem("checkBoxMovies") ||
+        localStorage.getItem("checkBoxMovies") === "false"
+      ) {
+        setCheckBox(false);
+      } else {
+        setCheckBox(true);
+      }
     } else {
-      inputValues.inputValue = localStorage.getItem("searchValueSaved");
-      setSearchValue(inputValues.inputValue);
+      inputValues.inputValue = "";
+      setSearchValue("");
     }
   }, []);
 
+  function handleCheckbox(evt) {
+    evt.preventDefault();
+    setCheckBox(!checkBox);
+    if (page === "movies") {
+      localStorage.setItem("checkBoxMovies", !checkBox);
+    } else {
+      localStorage.setItem("checkBoxSavedMovies", !checkBox);
+    }
+  }
+
   function handleSubmit(evt) {
+    if (!inputValues.inputValue && page === "movies") {
+      setIsValueEmptyText("Нужно ввести ключевое слово");
+    } else {
+      setIsValueEmptyText("");
+    }
     evt.preventDefault();
     if (page === "movies") {
       localStorage.setItem("searchValue", inputValues.inputValue);
@@ -35,11 +59,7 @@ function SearchForm({ setSearchValue, checkBox, handleCheckbox, page }) {
         value={inputValues.inputValue || ""}
         onChange={handleInputChange}
       ></input>
-      <label className="search-form__input-error">
-        {!inputValues.searchValue &&
-          !localStorage.getItem("searchValue") &&
-          "Нужно ввести ключевое слово"}
-      </label>
+      <label className="search-form__input-error">{isValueEmptyText}</label>
       <button
         type="submit"
         aria-label="Поиск фильмов"

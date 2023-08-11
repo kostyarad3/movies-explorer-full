@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import useValidateForm from "../../hooks/useValidateForm";
 
 function Login({ handleLogin, LoginErrorText }) {
-  const { inputValues, inputErrors, isFormValid, handleInputChange } =
-    useValidateForm();
+  const {
+    inputValues,
+    inputErrors,
+    isFormValid,
+    handleInputChange,
+    emailError,
+  } = useValidateForm();
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -33,7 +38,9 @@ function Login({ handleLogin, LoginErrorText }) {
           value={inputValues?.email || ""}
           onChange={handleInputChange}
         />
-        <label className="login-form__input-error">{inputErrors.email}</label>
+        <label className="login-form__input-error">
+          {inputErrors.email || emailError}
+        </label>
         <p className="login-form__input-name">Пароль</p>
         <input
           type="password"

@@ -1,7 +1,11 @@
 const { celebrate, Joi } = require('celebrate');
 const router = require('express').Router();
 const { LINK_REGEX } = require('../utils/constants');
-const { getMovies, createMovie, deleteMovie } = require('../controllers/movies');
+const {
+  getMovies,
+  createMovie,
+  deleteMovie,
+} = require('../controllers/movies');
 
 router.get('/', getMovies);
 
@@ -15,7 +19,7 @@ router.post(
       year: Joi.number().required(),
       description: Joi.string().required().min(2).max(10000),
       image: Joi.string().required().pattern(LINK_REGEX),
-      trailer: Joi.string().required().pattern(LINK_REGEX),
+      trailerLink: Joi.string().required().pattern(LINK_REGEX),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
       thumbnail: Joi.string().required().pattern(LINK_REGEX),

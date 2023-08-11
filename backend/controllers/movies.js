@@ -25,7 +25,7 @@ function createMovie(req, res, next) {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -38,7 +38,7 @@ function createMovie(req, res, next) {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -62,9 +62,9 @@ function createMovie(req, res, next) {
 function deleteMovie(req, res, next) {
   Movie.findById(req.params.movieId)
     .orFail(new NotFoundError('Фильм не найден'))
-    .then((card) => {
-      if (card.owner.equals(req.user._id)) {
-        Movie.deleteOne(card)
+    .then((movie) => {
+      if (movie.owner.equals(req.user._id)) {
+        Movie.deleteOne(movie)
           .then((deletedMovie) => res.send({ data: deletedMovie }))
           .catch(next);
       } else {
