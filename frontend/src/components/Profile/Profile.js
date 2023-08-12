@@ -89,7 +89,7 @@ function Profile({ onUpdateUser, handleExitClick }) {
               className={`button profile-form__save-button ${
                 (inputValues.name === currentUser.name &&
                   inputValues.email === currentUser.email) ||
-                !isFormValid
+                !isFormValid || emailError
                   ? "profile-form__save-button_inactive"
                   : ""
               }`}

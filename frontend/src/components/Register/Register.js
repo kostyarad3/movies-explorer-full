@@ -76,7 +76,7 @@ function Register({ handleRegistration, RegisterErrorText }) {
           aria-label="Зарегестрироваться"
           disabled={!isFormValid}
           className={`button register-form__button ${
-            !isFormValid && "register-form__button_inactive"
+            (!isFormValid || emailError) ? "register-form__button_inactive" : ""
           }`}
         >
           Зарегестрироваться

@@ -65,7 +65,7 @@ function Login({ handleLogin, LoginErrorText }) {
           aria-label="Войти"
           disabled={!isFormValid}
           className={`button login-form__button ${
-            !isFormValid && "login-form__button_inactive"
+            !isFormValid || emailError ? "login-form__button_inactive" : ""
           }`}
         >
           Войти

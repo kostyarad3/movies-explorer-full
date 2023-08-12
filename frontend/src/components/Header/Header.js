@@ -1,7 +1,7 @@
 import React from "react";
 import headerLogo from "../../images/logo-header.svg";
 import Navigation from "../Navigation/Navigation";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useWindowWidth from "../../hooks/useWindowWidth";
 
 function Header({ loggedIn }) {
@@ -37,14 +37,28 @@ function Header({ loggedIn }) {
       <nav className="header__films">
         <ul className="header__list">
           <li className="header__list-item">
-            <Link to="/movies" className="link header__film">
+            <NavLink
+              to="/movies"
+              className={({ isActive }) =>
+                isActive
+                  ? " link header__film header__film_active"
+                  : "link header__film"
+              }
+            >
               Фильмы
-            </Link>
+            </NavLink>
           </li>
           <li className="header__list-item">
-            <Link to="/saved-movies" className="link header__film">
+            <NavLink
+              to="/saved-movies"
+              className={({ isActive }) =>
+                isActive
+                  ? " link header__film header__film_active"
+                  : "link header__film"
+              }
+            >
               Сохраненные фильмы
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>

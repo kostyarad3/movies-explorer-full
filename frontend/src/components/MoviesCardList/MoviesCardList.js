@@ -3,6 +3,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import useWindowWidth from "../../hooks/useWindowWidth";
 import Preloader from "../Preloader/Preloader";
 import NoMovieError from "../NoMovieError/NoMovieError";
+import { ONE_ROW_WIDTH, TWO_ROWS_WIDTH } from "../../utils/constants.js";
 
 function MoviesCardList({
   movies,
@@ -31,21 +32,21 @@ function MoviesCardList({
     if (page === "savedMovies") {
       return setMaxNubmerOfMovies(movies.length);
     }
-    if (windowWidth < 650) {
+    if (windowWidth < ONE_ROW_WIDTH) {
       setMaxNubmerOfMovies(5);
-    } else if (windowWidth < 900) {
+    } else if (windowWidth < TWO_ROWS_WIDTH) {
       setMaxNubmerOfMovies(8);
-    } else if (windowWidth > 900) {
+    } else {
       setMaxNubmerOfMovies(12);
     }
   }, [windowWidth]);
   // функция добавления фильмов
   function addMoreFilms() {
-    if (windowWidth < 650) {
+    if (windowWidth < ONE_ROW_WIDTH) {
       setMaxNubmerOfMovies(maxNumberOfMovies + 2);
-    } else if (windowWidth < 900) {
+    } else if (windowWidth < TWO_ROWS_WIDTH) {
       setMaxNubmerOfMovies(maxNumberOfMovies + 2);
-    } else if (windowWidth > 900) {
+    } else {
       setMaxNubmerOfMovies(maxNumberOfMovies + 3);
     }
   }
