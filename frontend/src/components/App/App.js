@@ -241,7 +241,7 @@ function App() {
 
   React.useEffect(() => {
     let filteredSavedMovies = savedMovies;
-    if (!searchValueSaved) {
+    if (!searchValueSaved) {  
       filteredSavedMovies = savedMovies;
     }
     if (searchValueSaved) {
